@@ -27,13 +27,13 @@ public class CryptoController {
         return cryptoStatsService.getCryptoStats(symbolName);
     }
 
-    @GetMapping("normalized-stats-sorted")
+    @GetMapping("stats/normalized-sorted")
     @Operation(description = "Api for getting sorted stats of each crypto with it's normalized price")
     public List<CryptoNormalizedStats> getNormalizesStatsSorted() {
         return cryptoStatsService.getCryptoNormalizedRangesSorted();
     }
 
-    @GetMapping("highest-normalized-range/{date}")
+    @GetMapping("stats/highest-range/{date}")
     @Operation(description = "Api for getting crypto with highest normalized range for date")
     public CryptoNormalizedStats getCryptoWithHighestNormalizedRangeForDate(
             @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
