@@ -24,7 +24,7 @@ public class CryptoCsvReaderServiceTest {
     @Test
     void readPrices_Successful() {
         String cryptoSymbol = "BTC";
-        List<Crypto> prices = cryptoCsvReaderService.readPrices(cryptoSymbol);
+        List<Crypto> prices = cryptoCsvReaderService.readInfoOf(cryptoSymbol);
 
         assertNotNull(prices);
         assertEquals(3, prices.size());
@@ -40,14 +40,14 @@ public class CryptoCsvReaderServiceTest {
     void readPrices_FileNotFound() {
         String cryptoSymbol = "UNKNOWN";
         CryptoNotFoundException cryptoNotFoundException =
-                assertThrows(CryptoNotFoundException.class, () -> cryptoCsvReaderService.readPrices(cryptoSymbol));
+                assertThrows(CryptoNotFoundException.class, () -> cryptoCsvReaderService.readInfoOf(cryptoSymbol));
 
         assertEquals(cryptoNotFoundException.getMessage(), "File not found with symbol name " + cryptoSymbol);
     }
 
     @Test
     void readAll_Successful() {
-        Map<String, List<Crypto>> allPrices = cryptoCsvReaderService.readAll();
+        Map<String, List<Crypto>> allPrices = cryptoCsvReaderService.readInfoOfAll();
 
         assertNotNull(allPrices);
         assertFalse(allPrices.isEmpty());

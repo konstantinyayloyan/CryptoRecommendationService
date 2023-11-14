@@ -21,17 +21,18 @@ import java.util.*;
 public class CryptoCsvReaderService implements CryptoReaderService {
 
     @Override
-    public Map<String, List<Crypto>> readAll() {
+    @SneakyThrows(FileNotFoundException.class)
+    public Map<String, List<Crypto>> readInfoOfAll() {
         Map<String, List<Crypto>> allPrices = new HashMap<>();
 
-        File folder = new File("src/main/resources/csvs");
+        File folder = ResourceUtils.getFile(getCsvDirectoryPath());
         File[] files = folder.listFiles();
 
         assert files != null;
         for (File file : files) {
             if (file.isFile() && file.getName().endsWith("_values.csv")) {
                 String cryptoSymbol = file.getName().replace("_values.csv", "");
-                List<Crypto> prices = readPrices(cryptoSymbol);
+                List<Crypto> prices = readInfoOf(cryptoSymbol);
                 allPrices.put(cryptoSymbol, prices);
             }
         }
@@ -41,10 +42,10 @@ public class CryptoCsvReaderService implements CryptoReaderService {
 
     @Override
     @SneakyThrows(CsvValidationException.class)
-    public List<Crypto> readPrices(String cryptoSymbol) {
+    public List<Crypto> readInfoOf(final String cryptoSymbol) {
         List<Crypto> prices = new ArrayList<>();
 
-        try (CSVReader reader = new CSVReader(new FileReader(ResourceUtils.getFile(getFilePath(cryptoSymbol))))) {
+        try (CSVReader reader = new CSVReader(new FileReader(ResourceUtils.getFile(getSpecificSymbolFilePath(cryptoSymbol))))) {
             String[] line;
             reader.readNext(); // Skip header line
 
@@ -61,18 +62,22 @@ public class CryptoCsvReaderService implements CryptoReaderService {
         return prices;
     }
 
-    private Crypto getCryptoFromFileLine(String[] line) {
+    private Crypto getCryptoFromFileLine(final String[] line) {
         LocalDateTime dateTime = getLocalDateTimeFromTimestamp(Long.parseLong(line[0]));
         String symbolName = line[1];
         BigDecimal price = new BigDecimal(line[2]);
         return new Crypto(dateTime, symbolName, price);
     }
 
-    private LocalDateTime getLocalDateTimeFromTimestamp(Long timestamp) {
+    private LocalDateTime getLocalDateTimeFromTimestamp(final Long timestamp) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone.getDefault().toZoneId());
     }
 
-    private String getFilePath(String cryptoSymbol) {
-        return "classpath:csvs/" + cryptoSymbol + "_values.csv";
+    private String getCsvDirectoryPath() {
+        return "classpath:csvs/";
+    }
+
+    private String getSpecificSymbolFilePath(final String cryptoSymbol) {
+        return getCsvDirectoryPath() + cryptoSymbol + "_values.csv";
     }
 }

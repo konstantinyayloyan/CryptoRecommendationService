@@ -48,7 +48,7 @@ public class CryptoServiceTest {
         mockCryptoPrices.put(btcSymbol, btcPrices);
         mockCryptoPrices.put(ethSymbol, ethPrices);
 
-        when(cryptoReaderService.readAll()).thenReturn(mockCryptoPrices);
+        when(cryptoReaderService.readInfoOfAll()).thenReturn(mockCryptoPrices);
 
         final var cryptoNormalizedRanges = cryptoService.getCryptoNormalizedRangesSorted();
 

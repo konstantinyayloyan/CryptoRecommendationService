@@ -13,8 +13,8 @@ public class CryptoStatsService {
 
     private final CryptoReaderService cryptoCachedCsvReaderService;
 
-    public CryptoStats getCryptoStats(String cryptoSymbol) {
-        final var prices = cryptoCachedCsvReaderService.readPrices(cryptoSymbol);
+    public CryptoStats getCryptoStats(final String cryptoSymbol) {
+        final var prices = cryptoCachedCsvReaderService.readInfoOf(cryptoSymbol);
         if (prices != null && !prices.isEmpty()) {
             return new CryptoStats(
                     getOldestTimestamp(prices),

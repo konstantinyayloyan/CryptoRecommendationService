@@ -12,7 +12,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(CryptoNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handle(CryptoNotFoundException exception) {
+    public ResponseEntity<String> handle(final CryptoNotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(exception.getMessage());

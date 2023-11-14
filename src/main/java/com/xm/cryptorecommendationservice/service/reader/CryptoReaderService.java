@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface CryptoReaderService {
 
-    Map<String, List<Crypto>> readAll();
-    List<Crypto> readPrices(String cryptoSymbol);
+    Map<String, List<Crypto>> readInfoOfAll();
+    List<Crypto> readInfoOf(String cryptoSymbol);
 }

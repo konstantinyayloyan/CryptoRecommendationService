@@ -34,7 +34,7 @@ public class CryptoStatsServiceTest {
                 new Crypto(LocalDateTime.parse("2023-11-16T12:00:00"), "BTC", new BigDecimal("51000"))
         );
 
-        when(cryptoReaderService.readPrices(cryptoSymbol)).thenReturn(mockPrices);
+        when(cryptoReaderService.readInfoOf(cryptoSymbol)).thenReturn(mockPrices);
 
         CryptoStats result = cryptoStatsService.getCryptoStats(cryptoSymbol);
 
@@ -44,7 +44,7 @@ public class CryptoStatsServiceTest {
         assertEquals(new BigDecimal("50000"), result.minPrice());
         assertEquals(new BigDecimal("51000"), result.maxPrice());
 
-        verify(cryptoReaderService, times(1)).readPrices(cryptoSymbol);
+        verify(cryptoReaderService, times(1)).readInfoOf(cryptoSymbol);
         verifyNoMoreInteractions(cryptoReaderService);
     }
 
@@ -52,13 +52,13 @@ public class CryptoStatsServiceTest {
     void getCryptoStats_EmptyList() {
         String cryptoSymbol = "BTC";
 
-        when(cryptoReaderService.readPrices(cryptoSymbol)).thenReturn(null);
+        when(cryptoReaderService.readInfoOf(cryptoSymbol)).thenReturn(null);
 
         CryptoStats result = cryptoStatsService.getCryptoStats(cryptoSymbol);
 
         assertNull(result);
 
-        verify(cryptoReaderService, times(1)).readPrices(cryptoSymbol);
+        verify(cryptoReaderService, times(1)).readInfoOf(cryptoSymbol);
         verifyNoMoreInteractions(cryptoReaderService);
     }
 }

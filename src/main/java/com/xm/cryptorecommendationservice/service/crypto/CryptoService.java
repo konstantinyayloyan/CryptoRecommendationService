@@ -16,7 +16,7 @@ public class CryptoService {
     private final CryptoReaderService cryptoCachedCsvReaderService;
 
     public List<CryptoNormalizedStats> getCryptoNormalizedRangesSorted() {
-        return cryptoCachedCsvReaderService.readAll()
+        return cryptoCachedCsvReaderService.readInfoOfAll()
                 .entrySet()
                 .stream()
                 .map(entry -> new CryptoNormalizedStats(entry.getKey(), CryptoHelper.calculateNormalizedRange(entry.getValue())))
