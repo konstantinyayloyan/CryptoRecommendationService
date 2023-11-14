@@ -1,5 +1,6 @@
 package com.xm.cryptorecommendationservice.service.crypto;
 
+import com.xm.cryptorecommendationservice.exception.CryptoNotFoundException;
 import com.xm.cryptorecommendationservice.helper.CryptoHelper;
 import com.xm.cryptorecommendationservice.model.CryptoNormalizedStats;
 import com.xm.cryptorecommendationservice.model.CryptoStats;
@@ -29,7 +30,7 @@ public class CryptoStatsService {
                     getMaxPrice(prices)
             );
         }
-        return null;
+        throw new CryptoNotFoundException("Crypto stats not found for the specified symbol");
     }
 
     public List<CryptoNormalizedStats> getCryptoNormalizedRangesSorted() {

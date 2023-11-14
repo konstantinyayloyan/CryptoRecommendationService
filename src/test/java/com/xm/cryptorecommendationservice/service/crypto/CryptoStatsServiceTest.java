@@ -1,5 +1,6 @@
 package com.xm.cryptorecommendationservice.service.crypto;
 
+import com.xm.cryptorecommendationservice.exception.CryptoNotFoundException;
 import com.xm.cryptorecommendationservice.model.Crypto;
 import com.xm.cryptorecommendationservice.model.CryptoStats;
 import com.xm.cryptorecommendationservice.service.reader.CryptoReaderService;
@@ -57,10 +58,10 @@ public class CryptoStatsServiceTest {
 
         when(cryptoReaderService.readInfoOf(cryptoSymbol)).thenReturn(null);
 
-        CryptoStats result = cryptoStatsService.getCryptoStats(cryptoSymbol);
+        CryptoNotFoundException cryptoNotFoundException = assertThrows(CryptoNotFoundException.class,
+                () -> cryptoStatsService.getCryptoStats(cryptoSymbol));
 
-        assertNull(result);
-
+        assertEquals("Crypto stats not found for the specified symbol", cryptoNotFoundException.getMessage());
         verify(cryptoReaderService, times(1)).readInfoOf(cryptoSymbol);
         verifyNoMoreInteractions(cryptoReaderService);
     }
