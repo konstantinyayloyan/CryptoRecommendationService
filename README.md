@@ -55,7 +55,7 @@ The Crypto Recommendation Service is a Spring Boot application that provides rec
 
 2. Run the Docker container:
    ```bash
-   docker run -p 8080:8080 -d <YOUR_DOCKER_IMAGE_NAME>:latest
+   docker run -p 8080:8080 -d crypto-recommendation-service:1.0.0
    ```
 
    The application will be accessible at [http://localhost:8080](http://localhost:8080).
