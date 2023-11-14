@@ -1,9 +1,11 @@
 package com.xm.cryptorecommendationservice.helper;
 
+import com.xm.cryptorecommendationservice.exception.CryptoNotFoundException;
 import com.xm.cryptorecommendationservice.model.Crypto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -46,5 +48,18 @@ public class CryptoHelper {
         }
 
         return maxPrice.subtract(minPrice).divide(minPrice, 4, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal calculateNormalizedRangeForDay(List<Crypto> cryptoList, LocalDate specificDay) {
+        // Filter the list to include only prices for the specific day
+        List<Crypto> pricesOnSpecificDay = cryptoList.stream()
+                .filter(crypto -> crypto.timestamp().toLocalDate().isEqual(specificDay))
+                .toList();
+
+        if (pricesOnSpecificDay.isEmpty()) {
+            throw new CryptoNotFoundException("Crypto stats not found for the specified date");
+        }
+
+        return calculateNormalizedRange(pricesOnSpecificDay);
     }
 }
